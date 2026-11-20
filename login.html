@@ -410,6 +410,10 @@
     async function handleLogin(e) {
       e.preventDefault();
       hideAlert();
+      if (window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:') {
+        window.location.href = 'https://easygrow-xesm.onrender.com/login.html';
+        return;
+      }
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       const submitBtn = document.getElementById('btn-login-submit');
@@ -417,13 +421,29 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'Verificando credenciales...';
 
-      try {
+      const attemptLogin = async () => {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
-        const data = await res.json();
+        const contentType = res.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          throw new Error(`HTTP_${res.status}`);
+        }
+        return res.json();
+      };
+
+      try {
+        let data;
+        try {
+          data = await attemptLogin();
+        } catch (firstErr) {
+          // Render free-tier cold start can briefly return 502/503 HTML; retry once
+          submitBtn.innerHTML = 'Conectando con el servidor...';
+          await new Promise(r => setTimeout(r, 2500));
+          data = await attemptLogin();
+        }
 
         if (data.success) {
           showAlert('Acceso autorizado. Redirigiendo a la consola...', false);
@@ -436,7 +456,7 @@
           submitBtn.innerHTML = 'Acceder a la Consola';
         }
       } catch (err) {
-        showAlert('Error de conexión con el servidor.');
+        showAlert('Error de conexión con el servidor. Espera unos segundos e intenta nuevamente.');
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Acceder a la Consola';
       }

@@ -112,7 +112,9 @@
   <script src="js/laptop-hero.js"></script>
 
   <script>
-    const EASYGROW_ENTRY_ROUTE = 'login.html';
+    const EASYGROW_RENDER_ORIGIN = 'https://easygrow-xesm.onrender.com';
+    const isStaticHost = window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:';
+    const EASYGROW_ENTRY_ROUTE = isStaticHost ? `${EASYGROW_RENDER_ORIGIN}/login.html` : 'login.html';
 
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Vincular CTA principal único a la ruta real del proyecto
