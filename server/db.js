@@ -543,6 +543,25 @@ if (!findXiomara) {
   console.log('[DB] Cuenta limpia de prueba creada: xiomarateamo@gmail.com / 12345678');
 }
 
+const findBosco = db.prepare('SELECT * FROM users WHERE email = ?').get('boscomarica@gmail.com');
+if (!findBosco) {
+  const { hash, salt } = hashPassword('boscomk');
+  db.prepare(`
+    INSERT INTO users (id, email, password_hash, salt, name, company_name, role, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    'usr_bosco_clean',
+    'boscomarica@gmail.com',
+    hash,
+    salt,
+    'Bosco',
+    'Mi Negocio EasyGrow',
+    'tenant',
+    new Date().toISOString()
+  );
+  console.log('[DB] Cuenta limpia creada: boscomarica@gmail.com / boscomk');
+}
+
 // Seed Exact 3 Official Dropi Marketplace Products (REA Model + Standard Price + Distribution Alliances)
 const seedDefaults = [
   {
