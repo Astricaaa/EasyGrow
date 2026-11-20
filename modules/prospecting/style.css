@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: prospecting */
+[data-module="prospecting"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="prospecting"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

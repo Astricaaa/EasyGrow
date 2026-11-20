@@ -1,0 +1,268 @@
+[
+  {
+    "id": "executive-goals",
+    "slug": "executive-goals",
+    "name": "1. Dashboard de Objetivos",
+    "fullName": "Dashboard de Objetivos Gerenciales y Cumplimiento",
+    "stationId": 1,
+    "stationName": "01. Gerencia & Calendario",
+    "order": 1,
+    "icon": "trending-up",
+    "path": "modules/executive-goals/",
+    "modAccent": "#1FA866",
+    "summary": "Seguimiento ejecutivo de metas por área con métricas conectadas en vivo, semáforo de avance y definición de objetivos estratégicos.",
+    "kpis": [
+      { "label": "Cumplimiento Global", "value": "0%", "change": "Promedio metas activas" },
+      { "label": "En Meta", "value": "0", "change": "Semáforo verde" },
+      { "label": "En Seguimiento", "value": "0", "change": "Requiere foco" }
+    ],
+    "subsections": ["Gráficas de Cumplimiento", "Tabla de Objetivos", "Definir Objetivo"]
+  },
+  {
+    "id": "operational-calendar",
+    "slug": "operational-calendar",
+    "name": "2. Calendario & Agenda",
+    "fullName": "Calendario Operativo, Citas de Clientes e Hitos",
+    "stationId": 1,
+    "stationName": "01. Gerencia & Calendario",
+    "order": 2,
+    "icon": "calendar",
+    "path": "modules/operational-calendar/",
+    "modAccent": "#1FA866",
+    "summary": "Cuadrícula visual mensual y semanal unificada: citas de clientes, fechas límite de objetivos gerenciales, entregas logísticas y publicaciones.",
+    "kpis": [
+      { "label": "Citas Clientes", "value": "0", "change": "Sincronizado con Bandeja" },
+      { "label": "Hitos & Metas", "value": "0", "change": "Vencimientos activos" },
+      { "label": "Entregas / Social", "value": "0", "change": "Programación vigente" }
+    ],
+    "subsections": ["Vista Mensual", "Vista Semanal", "Agendar Cita Rápida"]
+  },
+  {
+    "id": "marketplace",
+    "slug": "marketplace",
+    "name": "Catálogo REA & Despacho",
+    "fullName": "Catálogo Dropi, Inventario Propio & Despacho Multi-Origen",
+    "stationId": 2,
+    "stationName": "02. Comercio & Logística",
+    "order": 3,
+    "icon": "shopping-bag",
+    "path": "modules/marketplace/",
+    "modAccent": "#1FA866",
+    "summary": "Gestión de catálogo Dropi e inventario propio bajo modelo REA con carga asistida desde Excel y carrito agrupado por origen.",
+    "kpis": [
+      { "label": "SKUs Activos", "value": "3", "change": "Catálogo verificado" },
+      { "label": "Orígenes Activos", "value": "3", "change": "Agrupación automática" },
+      { "label": "Guías Emitidas", "value": "0", "change": "1 guía por envío" }
+    ],
+    "subsections": ["Catálogo REA", "Carrito Multi-Origen"]
+  },
+  {
+    "id": "shipping-tracker",
+    "slug": "shipping-tracker",
+    "name": "Guías & Transportadoras",
+    "fullName": "Bitácora de Guías, Transportadoras y Evaluaciones",
+    "stationId": 2,
+    "stationName": "02. Comercio & Logística",
+    "order": 4,
+    "icon": "truck",
+    "path": "modules/shipping-tracker/",
+    "modAccent": "#1FA866",
+    "summary": "Control auditable de guías emitidas por envío, matriz comparativa de transportadoras y evaluación separada de proveedor y producto.",
+    "kpis": [
+      { "label": "Guías en Ruta", "value": "0", "change": "1 guía por origen" },
+      { "label": "Avisos Emitidos", "value": "0", "change": "Trazabilidad activa" },
+      { "label": "Devoluciones", "value": "Fase Posterior", "change": "Alcance vigente" }
+    ],
+    "subsections": ["Guías Activas", "Matriz de Transportadoras", "Avisos y Evaluaciones"]
+  },
+  {
+    "id": "crm-pipeline",
+    "slug": "crm-pipeline",
+    "name": "Pipeline CRM & Clientes",
+    "fullName": "Gestión de Oportunidades Kanban, Fidelización e Indicadores",
+    "stationId": 3,
+    "stationName": "03. Ventas & CRM",
+    "order": 5,
+    "icon": "users",
+    "path": "modules/crm-pipeline/",
+    "modAccent": "#1FA866",
+    "summary": "Administración de oportunidades por etapas configurables (valor × probabilidad), historial de fidelización por cliente e indicadores por periodo.",
+    "kpis": [
+      { "label": "Ventas", "value": "$0 COP", "change": "Indicador base" },
+      { "label": "Conversión", "value": "0.0%", "change": "Indicador base" },
+      { "label": "Oportunidades Abiertas", "value": "0", "change": "Proyección ponderada" }
+    ],
+    "subsections": ["Tablero Kanban & KPIs", "Clientes & Compras Asociadas", "Proyección & Probabilidades"]
+  },
+  {
+    "id": "prospecting",
+    "slug": "prospecting",
+    "name": "Fórmulas & Directorio B2B",
+    "fullName": "Fórmulas Personalizadas (Privadas / Comunidad) y Prospección B2B",
+    "stationId": 3,
+    "stationName": "03. Ventas & CRM",
+    "order": 6,
+    "icon": "target",
+    "path": "modules/prospecting/",
+    "modAccent": "#1FA866",
+    "summary": "Biblioteca de fórmulas privadas por tienda, plantillas comunitarias sin exposición de datos, constructor sintáctico y directorio B2B.",
+    "kpis": [
+      { "label": "Mis Fórmulas", "value": "0", "change": "Espacio privado" },
+      { "label": "Comunidad", "value": "5", "change": "Plantillas sin datos" },
+      { "label": "Directorio B2B", "value": "Disponible", "change": "Importación a CRM" }
+    ],
+    "subsections": ["Mis Fórmulas Privadas", "Biblioteca Comunidad", "Constructor Visual", "Directorio B2B"]
+  },
+  {
+    "id": "forms-surveys",
+    "slug": "forms-surveys",
+    "name": "Formularios & Clasificación",
+    "fullName": "Bandeja de Respuestas Google Forms y Exportación Auditable",
+    "stationId": 4,
+    "stationName": "04. Captación & QRs",
+    "order": 7,
+    "icon": "check-square",
+    "path": "modules/forms-surveys/",
+    "modAccent": "#1FA866",
+    "summary": "Recepción y verificación cronológica de respuestas de Google Forms, clasificación por reglas e IA como apoyo a la revisión humana.",
+    "kpis": [
+      { "label": "Formularios Vinculados", "value": "1", "change": "Enlace + Embed Web" },
+      { "label": "Respuestas Verificadas", "value": "0", "change": "Fecha y hora exacta" },
+      { "label": "Pendientes Revisión", "value": "0", "change": "Exportable a Excel" }
+    ],
+    "subsections": ["Bandeja de Respuestas", "Reglas de Clasificación", "Conexión Google Forms"]
+  },
+  {
+    "id": "qr-generator",
+    "slug": "qr-generator",
+    "name": "Códigos QR Dinámicos",
+    "fullName": "Directorio de Códigos QR Dinámicos y Trazabilidad de Escaneos",
+    "stationId": 4,
+    "stationName": "04. Captación & QRs",
+    "order": 8,
+    "icon": "maximize",
+    "path": "modules/qr-generator/",
+    "modAccent": "#1FA866",
+    "summary": "Administración de QRs impresos con redirección modificable sin reimpresión y registro anónimo vs. identificado vía formulario.",
+    "kpis": [
+      { "label": "QRs Dinámicos", "value": "2", "change": "Activos en tienda" },
+      { "label": "Escaneos Totales", "value": "0", "change": "Conteo anónimo" },
+      { "label": "Identificados vía Form", "value": "0", "change": "Vinculados a persona" }
+    ],
+    "subsections": ["Directorio de QRs Activos", "Nuevo QR Dinámico"]
+  },
+  {
+    "id": "unified-inbox",
+    "slug": "unified-inbox",
+    "name": "1. Bandeja de Mensajes",
+    "fullName": "Bandeja de Mensajes (WhatsApp, Instagram y Facebook)",
+    "stationId": 5,
+    "stationName": "05. Atención & WhatsApp",
+    "order": 9,
+    "icon": "inbox",
+    "path": "modules/unified-inbox/",
+    "modAccent": "#1FA866",
+    "summary": "Atiende mensajes de WhatsApp, Instagram y Facebook en un solo lugar con sugerencias de Orbe IA aprobadas por tu equipo.",
+    "kpis": [
+      { "label": "Canales Activos", "value": "WA • IG • FB", "change": "Un solo lugar" },
+      { "label": "Aprobación Equipo", "value": "Activa", "change": "Revisión antes de enviar" },
+      { "label": "Agenda", "value": "Conectada", "change": "Cita en 1 clic" }
+    ],
+    "subsections": ["Conversaciones", "Chat & Respuestas IA", "Ficha del Cliente"]
+  },
+  {
+    "id": "whatsapp-integrations",
+    "slug": "whatsapp-integrations",
+    "name": "2. WhatsApp & Llamadas",
+    "fullName": "Conexión de WhatsApp y Respuesta a Llamadas Perdidas",
+    "stationId": 5,
+    "stationName": "05. Atención & WhatsApp",
+    "order": 10,
+    "icon": "phone-call",
+    "path": "modules/whatsapp-integrations/",
+    "modAccent": "#1FA866",
+    "summary": "Conecta el WhatsApp de tu empresa paso a paso y configura el mensaje automático por chat cuando no puedan contestar una llamada.",
+    "kpis": [
+      { "label": "Conexión WhatsApp", "value": "Guiada 3 Pasos", "change": "Alta oficial Meta" },
+      { "label": "Llamadas Perdidas", "value": "Auto-Chat", "change": "Máx. 1 mensaje por llamada" },
+      { "label": "Soporte TI", "value": "Opcional", "change": "Detalles ocultables" }
+    ],
+    "subsections": ["Conectar mi WhatsApp", "Llamadas Perdidas", "Historial de Actividad"]
+  },
+  {
+    "id": "chat-widget",
+    "slug": "chat-widget",
+    "name": "3. Entrenador Orbe IA",
+    "fullName": "Entrenador de Respuestas y Clasificación de Mensajes IA",
+    "stationId": 5,
+    "stationName": "05. Atención & WhatsApp",
+    "order": 11,
+    "icon": "message-circle",
+    "path": "modules/chat-widget/",
+    "modAccent": "#1FA866",
+    "summary": "Prueba y verifica con lenguaje sencillo cómo Orbe IA entiende las preguntas de tus clientes antes de sugerir respuestas en la Bandeja.",
+    "kpis": [
+      { "label": "Asistente", "value": "Orbe IA", "change": "Entrenamiento en vivo" },
+      { "label": "Supervisión", "value": "Humana", "change": "Control del equipo" },
+      { "label": "Canales", "value": "WA / IG / FB", "change": "Mismo criterio" }
+    ],
+    "subsections": ["Probar Preguntas", "Ejemplos Frecuentes"]
+  },
+  {
+    "id": "social-planner",
+    "slug": "social-planner",
+    "name": "Parrilla Social Multired",
+    "fullName": "Parrilla de Publicaciones (Instagram, Facebook y TikTok)",
+    "stationId": 6,
+    "stationName": "06. Marketing & Auditoría",
+    "order": 12,
+    "icon": "calendar",
+    "path": "modules/social-planner/",
+    "modAccent": "#1FA866",
+    "summary": "Programación unificada para Instagram, Facebook y TikTok en zona horaria de tienda con recordatorios manuales verificables.",
+    "kpis": [
+      { "label": "Redes", "value": "IG • FB • TikTok", "change": "OAuth por tienda" },
+      { "label": "Publicaciones", "value": "0", "change": "Borrador / Programadas" },
+      { "label": "Recordatorios Manuales", "value": "0", "change": "Control formato/API" }
+    ],
+    "subsections": ["Parrilla de Publicaciones", "Recordatorios Manuales", "Programar Publicación", "Cuentas Sociales"]
+  },
+  {
+    "id": "ad-manager",
+    "slug": "ad-manager",
+    "name": "Campañas, Permisos & ROAS",
+    "fullName": "Gestión de Campañas, Permisos Individuales y Atribución Checkout",
+    "stationId": 6,
+    "stationName": "06. Marketing & Auditoría",
+    "order": 13,
+    "icon": "trending-up",
+    "path": "modules/ad-manager/",
+    "modAccent": "#1FA866",
+    "summary": "Administración de campañas existentes (Meta/Google Ads) con confirmación obligatoria, matriz de permisos, atribución de checkout y bitácora.",
+    "kpis": [
+      { "label": "Cuentas Conectadas", "value": "0", "change": "Meta Ads / Google Ads" },
+      { "label": "Ventas Atribuidas", "value": "$0 COP", "change": "Última campaña pagada" },
+      { "label": "ROAS Verificado", "value": "0.0x", "change": "Solo datos reales" }
+    ],
+    "subsections": ["Campañas & Métricas", "Atribución Checkout", "Permisos Colaborador", "Cuentas Ads", "Bitácora de Auditoría"]
+  },
+  {
+    "id": "seo-analytics",
+    "slug": "seo-analytics",
+    "name": "SEO Search Console",
+    "fullName": "SEO Orgánico: Google Search Console (Modo Solo Lectura)",
+    "stationId": 6,
+    "stationName": "06. Marketing & Auditoría",
+    "order": 14,
+    "icon": "target",
+    "path": "modules/seo-analytics/",
+    "modAccent": "#1FA866",
+    "summary": "Consulta segura en modo solo lectura sobre propiedad autorizada de Google Search Console con recomendaciones trazables por dato y periodo.",
+    "kpis": [
+      { "label": "Estado Propiedad", "value": "Sin conexión", "change": "Google Search Console" },
+      { "label": "Clics / Impresiones", "value": "0 / 0", "change": "Sin datos simulados" },
+      { "label": "Modo del Sitio", "value": "Solo lectura", "change": "No altera páginas" }
+    ],
+    "subsections": ["Estado & Métricas", "Recomendaciones Explicables"]
+  }
+]

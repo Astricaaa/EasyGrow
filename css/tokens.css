@@ -1,0 +1,58 @@
+:root {
+  color-scheme: light;
+
+  /* Paleta Editorial EasyGrow (Papel Blanco + Tinta Negra + Verde Esmeralda) */
+  --accent-1: #1FA866;
+  --accent-1-bright: #34C77B;
+  --accent-1-glow: rgba(31, 168, 102, 0.22);
+  --accent-1-dim: rgba(31, 168, 102, 0.10);
+  --accent-2: #111111;
+  --accent-2-glow: rgba(17, 17, 17, 0.14);
+
+  /* Tokens Especiales para Carga y Finanzas */
+  --usd-green: #1FA866;
+  --usd-green-dark: #147A48;
+  --usd-white: #FFFFFF;
+
+  /* Datos y Estados */
+  --data-teal: #1FA866;
+  --data-crimson: #C92A37;
+  --data-slate: #5C646D;
+  --data-amber: #B47800;
+
+  /* Superficies y Fondos */
+  --bg-dark: #F8F8F6;
+  --bg-darker: #EFEFE9;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F2F4F1;
+  --bg-glass: rgba(255, 255, 255, 0.90);
+  --bg-glass-strong: rgba(248, 248, 246, 0.96);
+
+  /* Bordes y Líneas Estructurales */
+  --border-subtle: #D7D7D3;
+  --border-ink: #111111;
+  --border-glass: rgba(31, 168, 102, 0.38);
+  --border-active: #1FA866;
+
+  /* Tipografía y Contraste (mínimo 4.5:1) */
+  --text-main: #111111;
+  --text-muted: #525860;
+  --text-dim: #767E87;
+
+  /* Dimensiones y Transiciones */
+  --sidebar-width: 264px;
+  --sidebar-collapsed-width: 72px;
+  --drawer-width: 480px;
+  --warp-duration: 320ms;
+  --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --warp-duration: 0ms;
+  }
+}

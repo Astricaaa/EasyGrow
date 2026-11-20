@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: qr-generator */
+[data-module="qr-generator"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="qr-generator"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

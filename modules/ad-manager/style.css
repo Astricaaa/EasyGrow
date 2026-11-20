@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: ad-manager */
+[data-module="ad-manager"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="ad-manager"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: forms-surveys */
+[data-module="forms-surveys"] {
+  --mod-accent: #E2B857;
+}
+
+[data-module="forms-surveys"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

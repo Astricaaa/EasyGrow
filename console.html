@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyGrow - Consola de Negocios y Operaciones</title>
+  <link rel="icon" type="image/png" href="easygrow-logo-badge.png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/console.css">
+</head>
+<body>
+
+  <!-- Halo de Cursor Ambiental -->
+  <div id="cursor-halo"></div>
+
+  <!-- Contenedor de Toasts en Tiempo Real (SSE) -->
+  <div id="realtime-toast-container" style="position: fixed; bottom: 2rem; right: 2rem; z-index: 10000; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;"></div>
+
+  <div class="console-app-shell">
+
+    <!-- 3. MENÚ LATERAL IZQUIERDO FIJO (264px / Colapsable a 72px) -->
+    <aside class="console-sidebar" id="console-sidebar" aria-label="Navegación de Módulos">
+      <div class="sidebar-header">
+        <a href="console.html" class="sidebar-brand">
+          <img src="easygrow-logo-light.png" alt="EasyGrow" class="brand-logo-icon" style="width: 34px; height: 34px; border-radius: 8px; object-fit: contain; border: 1px solid var(--border-subtle); background: #F8F8F6; padding: 3px;" />
+          <span>EasyGrow</span>
+        </a>
+        <button class="sidebar-collapse-btn" id="sidebar-collapse-toggle" aria-label="Colapsar o expandir menú lateral">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <!-- Grupos Colapsables por Estación (11 Módulos Activos) -->
+      <nav class="sidebar-nav-container" id="sidebar-nav-container">
+        <!-- Renderizado dinámico desde modules.registry.json -->
+      </nav>
+
+      <!-- Pie del Menú Lateral -->
+      <div class="sidebar-footer">
+        <a href="index.html" class="btn-sidebar-home">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Volver a Portada</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE TRABAJO -->
+    <div class="console-main-container">
+
+      <!-- Barra Superior de la Consola -->
+      <header class="console-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú en móvil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          
+          <div class="topbar-breadcrumbs" aria-label="Ubicación actual">
+            <span class="breadcrumb-station" id="breadcrumb-station-name">Estación 01</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" id="breadcrumb-module-name">Marketplace Dropi</span>
+          </div>
+
+          <button class="btn-secondary" style="font-size: 0.78rem; padding: 0.3rem 0.65rem; border-color: var(--border-subtle); margin-left: 0.5rem;" onclick="window.consoleApp.openDrawer(window.consoleApp.activeModuleId)" title="Abrir resumen y métricas de este módulo">
+            ℹ Guía Rápida
+          </button>
+        </div>
+
+        <div class="topbar-right">
+          <!-- KPI Financiero Dinámico Real (Zero Baseline Inicial) -->
+          <div class="topbar-metrics-pill" title="Ingresos Reales Facturados en CRM">
+            <span style="color: var(--accent-1);">●</span>
+            <span id="topbar-revenue-display">$0 COP</span>
+          </div>
+
+          <!-- Perfil de Usuario & Tenant Badge -->
+          <div class="user-profile-badge" id="user-profile-badge" style="display: flex; align-items: center; gap: 0.6rem; background: #F4F5F2; border: 1px solid var(--border-subtle); padding: 0.3rem 0.75rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0;">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #111111; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem;" id="user-avatar-initials">A</div>
+            <div style="display: flex; flex-direction: column; line-height: 1.1;">
+              <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-main);" id="user-company-display">Mi Negocio</span>
+              <span style="font-size: 0.65rem; color: var(--accent-1); font-weight: 700;" id="user-role-badge">NEGOCIO</span>
+            </div>
+            <button onclick="window.consoleApp.logout()" title="Cerrar sesión segura" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; margin-left: 0.35rem; padding: 2px;" onmouseover="this.style.color='var(--data-crimson)'" onmouseout="this.style.color='var(--text-muted)'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            </button>
+          </div>
+
+          <!-- Orbe Asistente de IA (Pulsa al responder) -->
+          <div class="ai-assistant-orb-widget" id="ai-assistant-widget" role="button" tabindex="0" title="Asistente de IA EasyGrow">
+            <div class="ai-orb-core" id="ai-orb-core">
+              <div class="ai-orb-ring"></div>
+            </div>
+            <span class="ai-orb-label">Orbe IA</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Viewport de Módulos (Transición Warp < 400ms) -->
+      <main class="workspace-scroll-area">
+        <section class="module-viewport" id="module-viewport" data-module="marketplace" aria-live="polite">
+          <!-- Contenido renderizado dinámicamente -->
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- SLIDING DRAWER (PANEL LATERAL 420px–520px) CON TRAMPA DE FOCO -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <aside 
+    class="sliding-drawer" 
+    id="sliding-drawer" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="drawer-module-title" 
+    aria-hidden="true">
+    
+    <div class="drawer-header">
+      <span class="drawer-station-tag" id="drawer-station-badge">Estación 01</span>
+      <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Cerrar panel lateral (Esc)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="drawer-title-block">
+        <h3 id="drawer-module-title">Nombre del Módulo</h3>
+        <p id="drawer-module-desc">Descripción detallada de la infraestructura del módulo seleccionado.</p>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Métricas Clave de Rendimiento</div>
+        <div class="drawer-kpis-grid" id="drawer-kpis-container">
+          <!-- KPIs inyectados dinámicamente -->
+        </div>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Subsecciones y Accesos Rápidos</div>
+        <div class="drawer-subsections-list" id="drawer-subsections-container">
+          <!-- Subsecciones inyectadas dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn-open-full-module" id="btn-drawer-open-full">
+        <span>Abrir módulo completo</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MODAL: ASISTENTE DE IMPORTACIÓN EXCEL / CSV CON MAPEO DINÁMICO -->
+  <div id="excel-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 820px; max-height: 90vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.18);">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span class="hero-tag" style="font-size: 0.72rem;">Actualización en Tiempo Real</span>
+          <h2 style="font-size: 1.5rem; color: var(--text-main); margin-top: 0.25rem;">Asistente de Importación Excel / CSV</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Sube tu archivo de ventas o clientes. El sistema detectará las columnas y calculará tus ingresos y margen real.</p>
+        </div>
+        <button onclick="window.consoleApp.closeExcelModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1;">✕</button>
+      </div>
+
+      <!-- Zona de Carga Drag & Drop -->
+      <div id="excel-drop-zone" onclick="document.getElementById('excel-file-input').click()" style="border: 2px dashed var(--accent-1); border-radius: 12px; padding: 2.5rem; text-align: center; background: rgba(31, 168, 102, 0.04); cursor: pointer; transition: all 0.25s ease;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--accent-1); margin: 0 auto 0.75rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="12" y2="18"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">Arrastra y suelta tu archivo Excel (.xlsx, .xls) o .CSV aquí</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">o haz clic para examinar en tu computadora</div>
+        <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" style="display: none;" onchange="window.consoleApp.onExcelFileSelected(event)">
+      </div>
+
+      <!-- Sección de Mapeo de Columnas (Aparece tras cargar archivo) -->
+      <div id="excel-mapping-section" style="display: none; margin-top: 1.5rem;">
+        <h3 style="color: var(--accent-1); font-size: 1.1rem; margin-bottom: 1rem;">Mapeador Inteligente de Columnas</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; background: #F8F8F6; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Nombre del Cliente / Empresa *</label>
+            <select id="map-col-name" class="form-control" onchange="window.consoleApp.updateExcelPreview()"></select>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Teléfono / WhatsApp</label>
+            <select id="map-col-phone" class="form-control" onchange="window.consoleApp.updateExcelPreview()"></select>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Valor de Venta (Ingreso COP) *</label>
+            <select id="map-col-value" class="form-control" onchange="window.consoleApp.updateExcelPreview()"></select>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Costo del Producto / Servicio</label>
+            <select id="map-col-cost" class="form-control" onchange="window.consoleApp.updateExcelPreview()"></select>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Etapa del Pipeline</label>
+            <select id="map-col-stage" class="form-control" onchange="window.consoleApp.updateExcelPreview()"></select>
+          </div>
+        </div>
+
+        <!-- Resumen Matemático en Vivo -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.25rem;">
+          <div style="background: rgba(31, 168, 102, 0.06); border: 1px solid rgba(31, 168, 102, 0.3); border-radius: 8px; padding: 1rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Ventas a Importar</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--accent-1); margin-top: 0.25rem;" id="calc-preview-revenue">$0 COP</div>
+          </div>
+          <div style="background: rgba(31, 168, 102, 0.06); border: 1px solid rgba(31, 168, 102, 0.3); border-radius: 8px; padding: 1rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Margen Bruto Calculado</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--usd-green); margin-top: 0.25rem;" id="calc-preview-margin">0.0%</div>
+          </div>
+          <div style="background: #F8F8F6; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Registros Detectados</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-top: 0.25rem;" id="calc-preview-count">0</div>
+          </div>
+        </div>
+
+        <!-- Botón de Confirmación -->
+        <button class="btn-primary-large" id="btn-confirm-excel-import" onclick="window.consoleApp.confirmExcelImport()" style="width: 100%; margin-top: 1.5rem; padding: 0.9rem; font-size: 1rem; justify-content: center;">
+          ✓ Confirmar e Importar al CRM en Tiempo Real
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL PRODUCTO: DROPI O INVENTARIO PROPIO -->
+  <div id="admin-prod-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.18);">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span id="admin-prod-modal-badge" style="background: rgba(31, 168, 102, 0.10); border: 1px solid var(--accent-1); color: var(--accent-1); padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">Estación 01 • Catálogo e Inventario</span>
+          <h2 style="font-size: 1.4rem; color: var(--text-main); margin-top: 0.35rem;" id="admin-prod-modal-title">Publicar Producto (Dropi / Inventario Propio)</h2>
+        </div>
+        <button onclick="window.consoleApp.closeAdminProdModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem;">✕</button>
+      </div>
+
+      <form id="form-admin-product" onsubmit="window.consoleApp.submitAdminProduct(event)">
+        <input type="hidden" id="admin-prod-id">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Tipo de Origen *</label>
+              <select id="admin-prod-origin-type" class="form-control">
+                <option value="dropi">Red Dropi Global (Mayorista)</option>
+                <option value="propio">Inventario Propio (Privado)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Ciudad / Bodega de Origen *</label>
+              <select id="admin-prod-origin-city" class="form-control">
+                <option value="Medellín">Medellín</option>
+                <option value="Bogotá D.C.">Bogotá D.C.</option>
+                <option value="Cali">Cali</option>
+                <option value="Barranquilla">Barranquilla</option>
+                <option value="Bucaramanga">Bucaramanga</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Nombre Comercial del Producto *</label>
+              <input type="text" id="admin-prod-name" class="form-control" placeholder="Ej: Parlante Bluetooth Impermeable" required>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">SKU</label>
+              <input type="text" id="admin-prod-sku" class="form-control" placeholder="Ej: SKU-PAR-05">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Costo Unitario / Mayorista *</label>
+              <input type="number" id="admin-prod-cost" class="form-control" placeholder="Ej: 35000" required>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Precio Sugerido Venta *</label>
+              <input type="number" id="admin-prod-price" class="form-control" placeholder="Ej: 79900" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Stock en Bodega *</label>
+              <input type="number" id="admin-prod-stock" class="form-control" placeholder="Ej: 50" required>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Categoría</label>
+              <input type="text" id="admin-prod-category" class="form-control" placeholder="Ej: Tecnología">
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Proveedor / Bodega de Despacho</label>
+            <input type="text" id="admin-prod-supplier" class="form-control" placeholder="Ej: Mi Bodega Bogotá o Dropi Tech Hub">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Especificaciones Técnicas (Base para medir calidad) *</label>
+            <input type="text" id="admin-prod-specs" class="form-control" placeholder="Ej: Material ABS, Bluetooth 5.3, Batería 20h, Empaque sellado">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Descripción Comercial</label>
+            <textarea id="admin-prod-desc" class="form-control" rows="2" placeholder="Beneficios clave, garantía y detalles..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary-large" style="margin-top: 0.5rem; padding: 0.85rem; background: #111111; color: #FFFFFF; font-weight: 800; justify-content: center;">
+            Guardar y Publicar Producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: IMPORTACIÓN DE INVENTARIO DESDE EXCEL CON SUGERENCIA DE IA -->
+  <div id="inventory-excel-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 1020px; max-height: 92vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span class="hero-tag" style="font-size: 0.72rem;">Estación 01 • Adaptador Inteligente IA</span>
+          <h2 style="font-size: 1.45rem; color: var(--text-main); margin-top: 0.25rem;">Importar Inventario desde Excel Habitual a Plantilla EasyGrow</h2>
+          <p style="color: var(--text-muted); font-size: 0.86rem; margin-top: 0.25rem;">La IA detecta tus columnas habituales, sugiere cómo adaptarlas a la plantilla oficial de EasyGrow y te permite revisar y editar fila por fila antes de confirmar.</p>
+        </div>
+        <button onclick="window.consoleApp.closeInventoryExcelModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1;">✕</button>
+      </div>
+
+      <!-- Paso 1: Subida o archivo de demostración -->
+      <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: stretch; margin-bottom: 1.25rem;">
+        <div onclick="document.getElementById('inv-excel-file-input').click()" style="border: 2px dashed var(--accent-1); border-radius: 10px; padding: 1.25rem 1.5rem; text-align: left; background: rgba(31, 168, 102, 0.04); cursor: pointer; display: flex; align-items: center; gap: 1rem;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="color: var(--accent-1); flex-shrink: 0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="12" y2="18"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+          <div>
+            <div style="font-weight: 700; color: var(--text-main); font-size: 0.92rem;">Subir archivo Excel habitual (.xlsx, .xls, .csv)</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Cualquier nombre de columna: Ref, Artículo, Bodega, Costo, PVP, Ficha Técnica...</div>
+          </div>
+          <input type="file" id="inv-excel-file-input" accept=".xlsx, .xls, .csv" style="display: none;" onchange="window.consoleApp.onInventoryFileSelected(event)">
+        </div>
+        <button type="button" class="btn-primary-large" id="btn-load-sample-inv-excel" onclick="window.consoleApp.loadSampleInventoryExcel()" style="white-space: nowrap;">
+          ⚡ Cargar Excel Habitual de Prueba
+        </button>
+      </div>
+
+      <!-- Paso 2: Sugerencias IA + Tabla Editable -->
+      <div id="inv-excel-review-stage" style="display: none;">
+        <div style="background: rgba(31, 168, 102, 0.06); border: 1px solid var(--accent-1); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <strong style="color: var(--text-main); font-size: 0.95rem;">🤖 Sugerencia de Adaptación IA a Plantilla EasyGrow</strong>
+            <span id="inv-ai-confidence-badge" class="topbar-metrics-pill" style="font-size: 0.75rem;">Confianza semántica: 96%</span>
+          </div>
+          <div id="inv-ai-mapping-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h4 style="color: var(--text-main); font-size: 0.95rem;">Revisión y Edición por el Emprendedor (<span id="inv-preview-row-count">0</span> productos adaptados)</h4>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Puedes ajustar cualquier celda o quitar filas antes de confirmar la importación.</span>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 8px; max-height: 290px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; background: #FFFFFF;" id="inv-preview-table">
+            <thead style="background: #EFEFE9; position: sticky; top: 0; z-index: 2;">
+              <tr style="text-align: left; color: var(--text-main);">
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">SKU</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Producto *</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Origen</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Ciudad</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Bodega / Proveedor</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Costo</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Precio Venta</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Stock</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Especificaciones</th>
+                <th style="padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border-subtle);">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="inv-preview-tbody"></tbody>
+          </table>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="button" class="btn-secondary" onclick="window.consoleApp.closeInventoryExcelModal()">Cancelar</button>
+          <button type="button" class="btn-primary-large" id="btn-confirm-inv-import" onclick="window.consoleApp.confirmInventoryImport()">
+            ✓ Confirmar Cambios e Importar Inventario a EasyGrow
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EVALUACIÓN SEPARADA (PROVEEDOR VS. ESPECIFICACIONES DEL PRODUCTO) -->
+  <div id="shipment-eval-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.9rem;">
+        <div>
+          <span class="hero-tag" style="font-size: 0.7rem;">Calidad Independiente • Estación 01</span>
+          <h2 style="font-size: 1.35rem; color: var(--text-main); margin-top: 0.25rem;">Evaluar Proveedor y Especificaciones</h2>
+          <div id="eval-modal-guide-meta" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+        </div>
+        <button onclick="window.consoleApp.closeShipmentEvalModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem;">✕</button>
+      </div>
+
+      <form id="form-shipment-eval" onsubmit="window.consoleApp.submitShipmentEvaluation(event)">
+        <input type="hidden" id="eval-shipment-id">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="background: #F8F8F6; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.75rem;">1. Evaluación del Proveedor (Logística y Recepción)</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem;">
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Puntualidad de despacho (1-5)</label>
+                <select id="eval-punctuality" class="form-control">
+                  <option value="5">5 ★ — Puntual / Antes de tiempo</option>
+                  <option value="4">4 ★ — Dentro del plazo</option>
+                  <option value="3">3 ★ — Retraso leve</option>
+                  <option value="2">2 ★ — Retraso considerable</option>
+                  <option value="1">1 ★ — Incumplió plazo</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Estado del producto recibido (1-5)</label>
+                <select id="eval-condition" class="form-control">
+                  <option value="5">5 ★ — Empaque intacto y protegido</option>
+                  <option value="4">4 ★ — Buen estado general</option>
+                  <option value="3">3 ★ — Caja golpeada sin daño interno</option>
+                  <option value="2">2 ★ — Empaque deficiente</option>
+                  <option value="1">1 ★ — Dañado en recepción</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: rgba(31, 168, 102, 0.06); border: 1px solid var(--accent-1); border-radius: 8px; padding: 1rem;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.45rem;">2. Calidad del Producto (Según Especificaciones)</div>
+            <div id="eval-product-specs-preview" style="font-size: 0.78rem; color: var(--text-muted); background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.55rem 0.75rem; margin-bottom: 0.75rem;"></div>
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Cumplimiento técnico de especificaciones (1-5)</label>
+              <select id="eval-spec-quality" class="form-control">
+                <option value="5">5 ★ — Cumple 100% las especificaciones declaradas</option>
+                <option value="4">4 ★ — Cumple las especificaciones principales</option>
+                <option value="3">3 ★ — Variación menor respecto a ficha</option>
+                <option value="2">2 ★ — Especificación incompleta</option>
+                <option value="1">1 ★ — No coincide con especificaciones</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Observaciones de recepción y calidad (opcional)</label>
+            <textarea id="eval-notes" class="form-control" rows="2" placeholder="Ej: Sellado intacto y Bluetooth 5.3 verificado conforme a ficha..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary-large" style="padding: 0.85rem; justify-content: center;">
+            Guardar Evaluación y Recalcular Puntajes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ESTACIÓN 02: EDITOR DE ETAPAS DEL KANBAN, CATEGORÍAS COMUNES Y SUGERENCIAS DE PROBABILIDAD -->
+  <div id="stages-config-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 820px; max-height: 92vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span class="hero-tag" style="font-size: 0.7rem;">Estación 02 • Configuración por Tienda</span>
+          <h2 style="font-size: 1.4rem; color: var(--text-main); margin-top: 0.25rem;">Etapas del Kanban, Categoría Común y Probabilidad</h2>
+          <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 0.2rem;">Cada etapa se agrupa bajo una categoría común (<b>nuevo</b>, <b>en progreso</b>, <b>ganado</b> o <b>perdido</b>) y usa la fórmula compartida: <code>Valor de oportunidad × Probabilidad de etapa</code>.</p>
+        </div>
+        <button onclick="window.consoleApp.closeStagesConfigModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem;">✕</button>
+      </div>
+
+      <!-- Sugerencias históricas revisables por el administrador -->
+      <div id="stages-history-suggestions-box" style="margin-bottom: 1.25rem;"></div>
+
+      <!-- Lista de Etapas Editables -->
+      <div id="stages-editor-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;"></div>
+
+      <!-- Agregar Nueva Etapa -->
+      <form onsubmit="window.consoleApp.addNewStageConfig(event)" style="background: #F8F8F6; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem;">
+        <div style="font-weight: 800; font-size: 0.84rem; color: var(--text-main); margin-bottom: 0.65rem;">+ Agregar Nueva Etapa Personalizada al Kanban</div>
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr 0.9fr auto; gap: 0.65rem; align-items: center;">
+          <input type="text" id="new-stage-name" class="form-control" placeholder="Ej: Propuesta Enviada WhatsApp" required>
+          <select id="new-stage-category" class="form-control">
+            <option value="nuevo">Categoría: Nuevo</option>
+            <option value="en_progreso" selected>Categoría: En progreso</option>
+            <option value="ganado">Categoría: Ganado</option>
+            <option value="perdido">Categoría: Perdido</option>
+          </select>
+          <input type="number" id="new-stage-prob" class="form-control" min="0" max="100" value="45" placeholder="% Prob." required>
+          <button type="submit" class="btn-primary-large" style="padding: 0.68rem 1rem; white-space: nowrap;">+ Añadir Etapa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ESTACIÓN 02: REGISTRAR COMPRA ASOCIADA AL CLIENTE -->
+  <div id="purchase-record-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(17, 17, 17, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #FFFFFF; border: 1.5px solid #111111; border-radius: var(--radius-lg); width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; padding: 2rem; box-shadow: 0 24px 60px rgba(17, 17, 17, 0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.15rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.9rem;">
+        <div>
+          <span class="hero-tag" style="font-size: 0.7rem;">Fidelización • Registro Asociado</span>
+          <h2 style="font-size: 1.35rem; color: var(--text-main); margin-top: 0.25rem;">Registrar Compra Asociada al Cliente</h2>
+        </div>
+        <button onclick="window.consoleApp.closePurchaseRecordModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem;">✕</button>
+      </div>
+
+      <form onsubmit="window.consoleApp.submitCustomerPurchase(event)" style="display: flex; flex-direction: column; gap: 0.9rem;">
+        <div>
+          <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Cliente Asociado *</label>
+          <select id="pur-contact-id" class="form-control" required></select>
+        </div>
+        <div>
+          <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Historial de Productos Comprados *</label>
+          <input type="text" id="pur-products-summary" class="form-control" placeholder="Ej: 2x Audífonos Pro ANC, 1x Termo LED" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem;">
+          <div>
+            <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Monto Total (COP) *</label>
+            <input type="number" id="pur-amount" class="form-control" placeholder="Ej: 229700" required>
+          </div>
+          <div>
+            <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Estado del Pedido *</label>
+            <select id="pur-status" class="form-control">
+              <option value="CONFIRMADO">Confirmado</option>
+              <option value="EN_TRANSITO">En Tránsito</option>
+              <option value="ENTREGADO">Entregado</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem;">
+          <div>
+            <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Fecha Estimada de Entrega *</label>
+            <input type="date" id="pur-est-date" class="form-control" required>
+          </div>
+          <div>
+            <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Fecha Real de Entrega (si ya llegó)</label>
+            <input type="date" id="pur-actual-date" class="form-control">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary-large" style="margin-top: 0.4rem; padding: 0.85rem; justify-content: center;">
+          Guardar Registro Asociado al Cliente
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Librería SheetJS (XLSX) para procesamiento de hojas de cálculo ultra rápido -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+  <!-- Scripts del Sistema -->
+  <script src="js/common.js"></script>
+  <script src="js/console.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.consoleApp = new window.EasyGrowConsole();
+      window.consoleApp.init();
+    });
+  </script>
+</body>
+</html>

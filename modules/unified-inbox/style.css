@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: unified-inbox */
+[data-module="unified-inbox"] {
+  --mod-accent: #E2B857;
+}
+
+[data-module="unified-inbox"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

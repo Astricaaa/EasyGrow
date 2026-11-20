@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: chat-widget */
+[data-module="chat-widget"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="chat-widget"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

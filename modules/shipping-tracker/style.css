@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: shipping-tracker */
+[data-module="shipping-tracker"] {
+  --mod-accent: #1FA866;
+}
+
+[data-module="shipping-tracker"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

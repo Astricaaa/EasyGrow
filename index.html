@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyGrow - Infraestructura Futurista para Negocios y Marketplace</title>
+  <link rel="icon" type="image/png" href="easygrow-logo-badge.png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/portada.css">
+</head>
+<body>
+
+  <!-- Rejilla en Perspectiva Futurista -->
+  <div class="bg-grid-overlay"></div>
+
+  <!-- Navegación Editorial Portada -->
+  <header class="portada-nav">
+    <a href="index.html" class="portada-brand" aria-label="EasyGrow Inicio">
+      <img src="easygrow-logo-con-lema.svg" alt="EasyGrow. Fideliza clientes. Rastrea envíos." style="height: 40px; width: auto; display: block;" />
+    </a>
+  </header>
+
+  <main>
+    <!-- VENTANA PRINCIPAL CON MODELO 3D + PRESENTACIÓN EDITORIAL DE MÓDULOS -->
+    <section id="estaciones" class="stations-scroll-track">
+      <div class="stations-track-header">
+        <p class="editorial-kicker">Tu propio CRM</p>
+        <h1 class="editorial-hero-heading">Se adapta a ti</h1>
+      </div>
+
+      <!-- Sección Integrada de Producto 3D (easygrow-laptop.glb) -->
+      <div class="laptop-product-section">
+        <div
+          id="laptop-canvas-container"
+          class="laptop-product-stage"
+          tabindex="0"
+          role="region"
+          aria-label="Portátil 3D interactivo EasyGrow. Usa la rueda del ratón o las flechas del teclado para abrir el equipo y explorar el panel."
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="laptop-loading-indicator" class="laptop-loading-indicator" aria-live="polite">
+            Cargando modelo 3D…
+          </div>
+        </div>
+      </div>
+
+      <!-- Presentación Editorial de 5 Módulos -->
+      <section class="editorial-modules-showcase" aria-labelledby="editorial-modules-title">
+        <header class="editorial-modules-header">
+          <div class="editorial-rule" aria-hidden="true"></div>
+          <div class="editorial-header-copy">
+            <h2 id="editorial-modules-title" class="editorial-section-title">Cinco pilares diseñados para operar con claridad</h2>
+            <p class="editorial-section-lead">Cada módulo resuelve una etapa clave de tu negocio sin configuraciones densas ni pasos redundantes.</p>
+          </div>
+        </header>
+
+        <div class="editorial-modules-grid">
+          <article class="editorial-module-item" tabindex="0" style="--stagger-index: 0;">
+            <span class="editorial-mod-num">01</span>
+            <h3 class="editorial-mod-title">Marketplace &amp; logística</h3>
+            <p class="editorial-mod-desc">Vende con aliados como Dropi o administra tu propio inventario con una carga guiada desde Excel.</p>
+          </article>
+
+          <article class="editorial-module-item" tabindex="0" style="--stagger-index: 1;">
+            <span class="editorial-mod-num">02</span>
+            <h3 class="editorial-mod-title">Ventas &amp; CRM visual</h3>
+            <p class="editorial-mod-desc">Organiza oportunidades, conserva el historial de tus clientes y sigue los indicadores clave del negocio.</p>
+          </article>
+
+          <article class="editorial-module-item" tabindex="0" style="--stagger-index: 2;">
+            <span class="editorial-mod-num">03</span>
+            <h3 class="editorial-mod-title">Captación &amp; conversión</h3>
+            <p class="editorial-mod-desc">Recibe y clasifica prospectos desde formularios y códigos QR dinámicos, con datos listos para revisar.</p>
+          </article>
+
+          <article class="editorial-module-item" tabindex="0" style="--stagger-index: 3;">
+            <span class="editorial-mod-num">04</span>
+            <h3 class="editorial-mod-title">Comunicación &amp; retención</h3>
+            <p class="editorial-mod-desc">Centraliza mensajes de tus canales y recibe sugerencias de Orbe IA con aprobación antes de responder.</p>
+          </article>
+
+          <article class="editorial-module-item" tabindex="0" style="--stagger-index: 4;">
+            <span class="editorial-mod-num">05</span>
+            <h3 class="editorial-mod-title">Marketing &amp; analítica</h3>
+            <p class="editorial-mod-desc">Programa publicaciones, conecta campañas y consulta métricas, atribución de ventas y recomendaciones SEO.</p>
+          </article>
+        </div>
+
+        <div class="editorial-cta-bar">
+          <a id="easygrow-primary-entry" href="/login.html" class="btn-editorial-entry">
+            <span>Ingresar a EasyGrow</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="portada-footer">
+    <p>© 2026 EasyGrow Platform. Sistema Operativo para Emprendedores y Comercio Electrónico.</p>
+  </footer>
+
+  <!-- Librería Three.js (CDN) + GLTFLoader para Renderizado WebGL 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- Scripts Propios del Sistema -->
+  <script src="js/common.js"></script>
+  <script src="js/loader.js"></script>
+  <script src="js/laptop-hero.js"></script>
+
+  <script>
+    const EASYGROW_ENTRY_ROUTE = '/login.html';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Vincular CTA principal único a la ruta real del proyecto
+      const primaryEntry = document.getElementById('easygrow-primary-entry');
+      if (primaryEntry) {
+        primaryEntry.setAttribute('href', EASYGROW_ENTRY_ROUTE);
+      }
+
+      // 2. Inicializar Barra de Carga en cada carga/refresco fuera de la consola
+      const loader = new window.EasyGrowLoader();
+      loader.init();
+
+      // 3. Inicializar Portátil 3D Interactivo
+      const laptopHero = new window.EasyGrowLaptopHero('laptop-canvas-container');
+      laptopHero.init();
+
+      // 4. Entrada escalonada accesible (IntersectionObserver) + resplandor sutil del cursor
+      const items = document.querySelectorAll('.editorial-module-item');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('is-revealed'));
+      } else {
+        items.forEach(el => el.classList.add('is-pending-reveal'));
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              entry.target.classList.remove('is-pending-reveal');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.14, rootMargin: '0px 0px -32px 0px' });
+
+        items.forEach(el => observer.observe(el));
+      }
+
+      if (!reducedMotion) {
+        items.forEach(item => {
+          item.addEventListener('pointermove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            item.style.setProperty('--glow-x', `${x.toFixed(1)}%`);
+            item.style.setProperty('--glow-y', `${y.toFixed(1)}%`);
+          }, { passive: true });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

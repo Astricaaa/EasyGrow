@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: social-planner */
+[data-module="social-planner"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="social-planner"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}

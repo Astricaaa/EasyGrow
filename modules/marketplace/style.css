@@ -1,0 +1,8 @@
+/* Scoped CSS for Module: marketplace */
+[data-module="marketplace"] {
+  --mod-accent: #34C77B;
+}
+
+[data-module="marketplace"] .module-accent-border {
+  border-left: 3px solid var(--mod-accent);
+}
