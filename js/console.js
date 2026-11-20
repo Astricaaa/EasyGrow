@@ -4025,12 +4025,11 @@ class EasyGrowConsoleApp {
   }
 
   getExecutiveGoals() {
-    const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().slice(0, 10);
     const defaultGoals = [
-      { id: 'goal_sales', title: 'Meta de Ventas Mensuales (COP)', area: 'Ventas & CRM', owner: 'Dirección Comercial', target: 10000000, manualCurrent: 0, unit: 'COP', deadline: endOfMonth, autoMetric: 'revenue' },
-      { id: 'goal_crm_closes', title: 'Cierres Comerciales Ganados', area: 'Ventas & CRM', owner: 'Equipo Comercial', target: 10, manualCurrent: 0, unit: 'cierres', deadline: endOfMonth, autoMetric: 'closedCount' },
-      { id: 'goal_logistics', title: 'Guías Entregadas a Tiempo', area: 'Comercio & Logística', owner: 'Coordinador Logístico', target: 15, manualCurrent: 0, unit: 'guías', deadline: endOfMonth, autoMetric: 'delivered' },
-      { id: 'goal_support', title: 'Atención Omnicanal & Captación', area: 'Atención & WhatsApp', owner: 'Equipo de Atención', target: 25, manualCurrent: 0, unit: 'registros', deadline: endOfMonth, autoMetric: 'engagement' }
+      { id: 'goal_sales', title: 'Meta de Ventas Mensuales (COP)', area: 'Ventas & CRM', owner: 'Dirección Comercial', target: 10000000, manualCurrent: 0, unit: 'COP', deadline: '', autoMetric: 'revenue' },
+      { id: 'goal_crm_closes', title: 'Cierres Comerciales Ganados', area: 'Ventas & CRM', owner: 'Equipo Comercial', target: 10, manualCurrent: 0, unit: 'cierres', deadline: '', autoMetric: 'closedCount' },
+      { id: 'goal_logistics', title: 'Guías Entregadas a Tiempo', area: 'Comercio & Logística', owner: 'Coordinador Logístico', target: 15, manualCurrent: 0, unit: 'guías', deadline: '', autoMetric: 'delivered' },
+      { id: 'goal_support', title: 'Atención Omnicanal & Captación', area: 'Atención & WhatsApp', owner: 'Equipo de Atención', target: 25, manualCurrent: 0, unit: 'registros', deadline: '', autoMetric: 'engagement' }
     ];
 
     let stored = null;

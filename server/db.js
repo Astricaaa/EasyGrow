@@ -523,6 +523,26 @@ if (!findAdmin) {
   console.log('[DB] Admin maestro creado: admin@easygrow.co / Admin123*!');
 }
 
+// Seed Clean-Slate Test Account (Zero Demo Products, Empty Calendar, Predefined KPIs)
+const findXiomara = db.prepare('SELECT * FROM users WHERE email = ?').get('xiomarateamo@gmail.com');
+if (!findXiomara) {
+  const { hash, salt } = hashPassword('12345678');
+  db.prepare(`
+    INSERT INTO users (id, email, password_hash, salt, name, company_name, role, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    'usr_xiomara_clean',
+    'xiomarateamo@gmail.com',
+    hash,
+    salt,
+    'Xiomara',
+    'Mi Negocio EasyGrow',
+    'tenant',
+    new Date().toISOString()
+  );
+  console.log('[DB] Cuenta limpia de prueba creada: xiomarateamo@gmail.com / 12345678');
+}
+
 // Seed Exact 3 Official Dropi Marketplace Products (REA Model + Standard Price + Distribution Alliances)
 const seedDefaults = [
   {
@@ -666,9 +686,16 @@ function getAllProducts() {
 }
 
 function getProductsForUser(tenantId) {
+  if (!tenantId || tenantId === 'usr_admin_master') {
+    return db.prepare(`
+      SELECT * FROM products
+      WHERE origin_type = 'dropi' OR tenant_id IS NULL OR tenant_id = ?
+      ORDER BY updated_at DESC
+    `).all(tenantId || 'usr_admin_master');
+  }
   return db.prepare(`
     SELECT * FROM products
-    WHERE origin_type = 'dropi' OR tenant_id IS NULL OR tenant_id = ?
+    WHERE tenant_id = ?
     ORDER BY updated_at DESC
   `).all(tenantId);
 }
