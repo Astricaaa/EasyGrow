@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: easygrow-os
+    runtime: node
+    plan: free
+    autoDeploy: true
+    buildCommand: npm run audit:security
+    startCommand: node server.js
+    healthCheckPath: /index.html
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true

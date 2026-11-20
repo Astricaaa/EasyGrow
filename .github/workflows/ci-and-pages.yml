@@ -1,0 +1,70 @@
+name: EasyGrow Security CI & GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate JavaScript syntax
+        run: |
+          node -c server.js
+          node -c server/db.js
+          node -c server/crypto-auth.js
+          node -c server/realtime.js
+          node -c server/upload-security.js
+          node -c js/console.js
+          node -c js/laptop-hero.js
+          node -c js/loader.js
+
+      - name: Run EasyGrow Security Audit
+        run: npm run audit:security
+
+  deploy-pages:
+    needs: security-audit
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare static frontend artifact (exclude server & private files)
+        run: |
+          mkdir -p _site
+          cp index.html login.html console.html _site/
+          cp easygrow-laptop.glb easygrow-logo-badge.png easygrow-logo-con-lema.svg easygrow-logo-light.png easygrow-shipping-photo.png _site/
+          cp -r css js modules _site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -3,6 +3,9 @@
   "version": "2.1.0",
   "description": "EasyGrow - Business Operating System & Marketplace (Node.js Native Security Hardened)",
   "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "start": "node server.js",
     "audit:security": "node scripts/security-audit.js"
